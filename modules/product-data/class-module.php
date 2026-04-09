@@ -19,6 +19,10 @@ class SSD_Product_Data_Module implements SSD_Module_Interface {
 	 * Register the metabox on the product edit screen.
 	 */
 	public function add_metabox(): void {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
 		add_meta_box(
 			'ssd-product-data',
 			'Simple Site Data: Product Debug',
@@ -67,6 +71,11 @@ class SSD_Product_Data_Module implements SSD_Module_Interface {
 	public function render_metabox( $post ): void {
 		$data = $this->collect_product_data( $post );
 		$json = wp_json_encode( $data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
+
+		if ( false === $json ) {
+			echo '<p>Unable to encode product data as JSON.</p>';
+			return;
+		}
 		?>
 		<div class="ssd-product-data-wrap">
 			<div class="ssd-toolbar">
