@@ -1,0 +1,92 @@
+/**
+ * Simple Site Data - Product Data Metabox Styles
+ */
+
+.ssd-product-data-wrap {
+	margin: 0;
+}
+
+.ssd-toolbar {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 12px;
+}
+
+.ssd-search {
+	flex: 1;
+	min-width: 200px;
+	padding: 6px 10px;
+}
+
+.ssd-json-output {
+	background: #1e1e1e;
+	color: #d4d4d4;
+	padding: 16px;
+	border-radius: 4px;
+	font-family: Menlo, Consolas, "Courier New", monospace;
+	font-size: 12px;
+	line-height: 1.6;
+	overflow-x: auto;
+	max-height: 600px;
+	overflow-y: auto;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	tab-size: 2;
+	margin: 0;
+}
+
+.ssd-json-output .ssd-key {
+	color: #9cdcfe;
+}
+
+.ssd-json-output .ssd-string {
+	color: #ce9178;
+}
+
+.ssd-json-output .ssd-number {
+	color: #b5cea8;
+}
+
+.ssd-json-output .ssd-boolean {
+	color: #569cd6;
+}
+
+.ssd-json-output .ssd-null {
+	color: #569cd6;
+	font-style: italic;
+}
+
+.ssd-json-output .ssd-highlight {
+	background: #614d00;
+	border-radius: 2px;
+	padding: 0 2px;
+}
+
+.ssd-json-output .ssd-collapsible {
+	cursor: pointer;
+	user-select: none;
+}
+
+.ssd-json-output .ssd-collapsible::before {
+	content: "\25BE ";
+	display: inline-block;
+	width: 1em;
+}
+
+.ssd-json-output .ssd-collapsed::before {
+	content: "\25B8 ";
+}
+
+.ssd-json-output .ssd-collapsed + .ssd-collapsible-content {
+	display: none;
+}
+
+.ssd-json-output .ssd-collapsed + .ssd-collapsible-content + .ssd-bracket-close {
+	display: none;
+}
+
+.ssd-json-output .ssd-collapsed .ssd-preview {
+	color: #666;
+	font-style: italic;
+}
