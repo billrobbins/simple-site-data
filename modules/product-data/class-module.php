@@ -37,6 +37,10 @@ class SSD_Product_Data_Module implements SSD_Module_Interface {
 	 * Enqueue CSS and JS on the product edit screen only.
 	 */
 	public function enqueue_assets( string $hook ): void {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
 		if ( ! in_array( $hook, array( 'post.php', 'post-new.php' ), true ) ) {
 			return;
 		}
