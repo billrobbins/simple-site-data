@@ -19,17 +19,11 @@ class SSD_Product_Data_Module implements SSD_Module_Interface {
 	 * Register the metabox on the product edit screen.
 	 */
 	public function add_metabox(): void {
-		$screen = $this->get_product_screen();
-
-		if ( ! $screen ) {
-			return;
-		}
-
 		add_meta_box(
 			'ssd-product-data',
 			'Simple Site Data: Product Debug',
 			array( $this, 'render_metabox' ),
-			$screen,
+			$this->get_product_screen(),
 			'normal',
 			'low'
 		);
@@ -82,7 +76,7 @@ class SSD_Product_Data_Module implements SSD_Module_Interface {
 					class="ssd-search"
 					placeholder="Search keys or values..."
 				/>
-				<button type="button" class="button ssd-copy-btn" data-target="ssd-json-output">
+				<button type="button" class="button ssd-copy-btn">
 					Copy JSON
 				</button>
 				<button type="button" class="button ssd-toggle-btn" data-expanded="true">
@@ -101,14 +95,12 @@ class SSD_Product_Data_Module implements SSD_Module_Interface {
 	 * @return array<string, mixed>
 	 */
 	private function collect_product_data( $post ): array {
-		$data = array(
+		return array(
 			'post'       => $this->get_post_fields( $post ),
 			'meta'       => $this->get_all_meta( $post->ID ),
 			'attributes' => $this->get_product_attributes( $post->ID ),
 			'taxonomies' => $this->get_taxonomy_terms( $post->ID ),
 		);
-
-		return $data;
 	}
 
 	/**
@@ -216,16 +208,11 @@ class SSD_Product_Data_Module implements SSD_Module_Interface {
 	}
 
 	/**
-	 * Determine the correct screen ID for the product edit page.
-	 * Supports both classic and HPOS-based WooCommerce screens.
+	 * Return the screen ID for the product edit page.
 	 *
-	 * @return string|null Screen ID or null if WooCommerce is not active.
+	 * @return string The product screen ID.
 	 */
-	private function get_product_screen(): ?string {
-		if ( ! function_exists( 'wc_get_page_id' ) ) {
-			return 'product';
-		}
-
+	private function get_product_screen(): string {
 		return 'product';
 	}
 
