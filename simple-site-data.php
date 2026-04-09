@@ -23,7 +23,11 @@ require_once SSD_PLUGIN_DIR . 'class-module-loader.php';
  * Boot the plugin after all plugins have loaded.
  */
 function ssd_init() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
 	$loader = new SSD_Module_Loader( SSD_PLUGIN_DIR . 'modules/' );
 	$loader->load_modules();
 }
-add_action( 'plugins_loaded', 'ssd_init' );
+add_action( 'admin_init', 'ssd_init' );
