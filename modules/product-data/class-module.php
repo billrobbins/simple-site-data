@@ -154,12 +154,32 @@ class SSD_Product_Data_Module implements SSD_Module_Interface {
 
 		foreach ( $raw_meta as $key => $values ) {
 			// Single-value keys are unwrapped for readability.
-			$meta[ $key ] = ( count( $values ) === 1 ) ? maybe_unserialize( $values[0] ) : array_map( 'maybe_unserialize', $values );
+			$meta[ $key ] = ( count( $values ) === 1 )
+				? $this->safe_unserialize( $values[0] )
+				: array_map( array( $this, 'safe_unserialize' ), $values );
 		}
 
 		ksort( $meta );
 
 		return $meta;
+	}
+
+	/**
+	 * Safely unserialize a stored meta value without instantiating arbitrary
+	 * classes. Prevents PHP object-injection / gadget-chain attacks when
+	 * surfacing untrusted stored data in the debug metabox.
+	 *
+	 * @param mixed $value The raw meta value.
+	 * @return mixed Unserialized value with only scalars/arrays, or the original value.
+	 */
+	private function safe_unserialize( $value ) {
+		if ( ! is_string( $value ) || ! is_serialized( $value ) ) {
+			return $value;
+		}
+
+		$result = @unserialize( $value, array( 'allowed_classes' => false ) );
+
+		return false === $result && 'b:0;' !== $value ? $value : $result;
 	}
 
 	/**
